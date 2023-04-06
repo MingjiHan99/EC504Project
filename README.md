@@ -5,6 +5,6 @@ Comparative Data Structures for Ordered Dictionary
 | Name | Data Structure |
 | -------- | -------- |
 | Mingyu Chen |TBD |
-| Bolun Liu |TBD  |
+| Bolun Liu |BST  |
 | Haochuan Hu | TBD  |
 | Mingji Han |  |
