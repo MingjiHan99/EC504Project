@@ -7,4 +7,4 @@ Comparative Data Structures for Ordered Dictionary
 | Mingyu Chen |TBD |
 | Bolun Liu |BST  |
 | Haochuan Hu | TBD  |
-| Mingji Han |  |
+| Mingji Han | Skip List |
