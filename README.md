@@ -6,5 +6,5 @@ Comparative Data Structures for Ordered Dictionary
 | -------- | -------- |
 | Mingyu Chen |TBD |
 | Bolun Liu |BST  |
-| Haochuan Hu | TBD  |
+| Haochuan Hu | AVL Tree  |
 | Mingji Han | Skip List |
