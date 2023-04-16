@@ -1,6 +1,5 @@
-### Binary Search Tree Implementation for Ordered Dictionary
+## <u>Binary Search Tree Implementation for Ordered Dictionary
 
-<hr>
 
 This implementation support key-value pairs. Each node in the binary search tree contains a key and a value, which are used to store the key-value pairs.
 
