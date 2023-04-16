@@ -1,3 +1,5 @@
+### Binary Search Tree Implementation for Ordered Dictionary
+
 This implementation support key-value pairs. Each node in the binary search tree contains a key and a value, which are used to store the key-value pairs.
 
 - The ```insert``` method inserts a new key-value pair into the tree. If the key already exists in the tree, the associated value is updated.
