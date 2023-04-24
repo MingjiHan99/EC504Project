@@ -106,14 +106,20 @@ private:
 };
 
 int main() {
-    
+    default_random_engine generator;
     vector<int> sizes = {10000, 50000, 100000, 500000, 1000000};
     vector<double> times = {0.0, 0.0, 0.0, 0.0, 0.0};
     for (int i = 0; i < 5; ++i) {
         SkipList<int, int> skiplist(0.5, 32);
+        std::uniform_int_distribution<int> dist(0, sizes[i]);
+
+        std::vector<int> nums;
+        for (int j = 0; j < sizes[i]; ++j) {
+            nums.push_back(dist(generator));
+        }
         auto insertion_start = high_resolution_clock::now();
         for (int j = 0; j < sizes[i]; ++j) {
-            skiplist.set(j, j);
+            skiplist.set(nums[j], j);
         }
         auto insertion_end = high_resolution_clock::now();
         std::chrono::duration<double, milli> fp_ms_insertion = insertion_end - insertion_start;
@@ -123,7 +129,7 @@ int main() {
         auto query_start = high_resolution_clock::now();
        
         for (int j = 0; j < sizes[i] ; ++j) {
-            skiplist.get(j);
+            skiplist.get(nums[j]);
         }
         auto query_end = high_resolution_clock::now();
         std::chrono::duration<double, milli> fp_ms_deletion = query_end - query_start;
