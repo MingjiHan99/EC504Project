@@ -2,8 +2,11 @@
 #include <iostream>
 #include <memory>
 #include <random>
+
+#include <chrono>
 #include <optional>
 using namespace std;
+using namespace std::chrono;
 
 template<typename K, typename V>
 struct Node {
@@ -11,10 +14,7 @@ struct Node {
     V value;
     vector<shared_ptr<Node> > next_ptrs;
     int level;
-    Node(const K& key, const V& value, const int& level) : key(key), value(value), level(level) {
-        for (int i = 0; i < level; ++i) {
-            next_ptrs.push_back(nullptr);
-        }
+    Node(const K& key, const V& value, const int& level) : key(key), value(value), level(level), next_ptrs(level, nullptr) {
     }
 };
 
@@ -26,40 +26,24 @@ public:
     }
 
     void set(const K& key, const V& value) {
-        // If key has existed, update the value.
-        auto ptr = find_ptr(key);
-        if (ptr != nullptr) {
-            ptr->value = value;
-            return;
-        }
-        // If key has not existed, insert a new node.
         int level = random_level();
         shared_ptr<Node<K, V> > node = make_shared<Node<K, V> >(key, value, level);
-        
-        vector<shared_ptr<Node<K, V> > > prev_ptrs(max_level, nullptr);
         auto p = head;
-        for (int i = level - 1; i >= 0; --i) {
+        for (int i = max_level - 1; i >= 0; --i) {
             while (p->next_ptrs[i] != nullptr && p->next_ptrs[i]->key < key) {
                 p = p->next_ptrs[i];
             }
-            prev_ptrs[i] = p;
-        }
-
-        for (int i = 0; i < level; ++i) {
-            node->next_ptrs[i] = prev_ptrs[i]->next_ptrs[i];
-            prev_ptrs[i]->next_ptrs[i] = node;
+            if (i < level) {
+                node->next_ptrs[i] = p->next_ptrs[i];
+                p->next_ptrs[i] = node;
+            }
         }
     }
     
     void remove(const K& key) {
-        // If key has not existed, ignore remove operation.
-        auto ptr = find_ptr(key);
-        if (ptr == nullptr) {
-            return;
-        }
-        // If key has existed, remove the node.
-        auto p = head;
+       
         vector<shared_ptr<Node<K, V> > > prev_ptrs(max_level, nullptr);
+        auto p = head;
         for (int i = max_level - 1; i >= 0; --i) {
             while (p->next_ptrs[i] != nullptr && p->next_ptrs[i]->key < key) {
                 p = p->next_ptrs[i];
@@ -67,10 +51,10 @@ public:
             prev_ptrs[i] = p;
         }
         for (int i = 0; i < max_level; ++i) {
-            if (prev_ptrs[i]->next_ptrs[i] != ptr) {
+            if (prev_ptrs[i]->next_ptrs[i]->key != key) {
                 break;
             }
-            prev_ptrs[i]->next_ptrs[i] = ptr->next_ptrs[i];
+            prev_ptrs[i]->next_ptrs[i] = prev_ptrs[i]->next_ptrs[i]->next_ptrs[i];
         }
     }
 
@@ -122,23 +106,33 @@ private:
 };
 
 int main() {
-    SkipList<int, int> skiplist(0.5, 4);
-    skiplist.set(1, 10);
     
-    skiplist.set(3, 30);
-    
-    skiplist.set(10, 100);
-    
-    skiplist.set(2, 20);
-    cout << skiplist << endl;
-    auto val = skiplist.get(1);
-    cout << "Query 1:" << endl;
-    if (val.has_value()) {
-        cout << val.value() << endl;
+    vector<int> sizes = {10000, 50000, 100000, 500000, 1000000};
+    vector<double> times = {0.0, 0.0, 0.0, 0.0, 0.0};
+    for (int i = 0; i < 5; ++i) {
+        SkipList<int, int> skiplist(0.5, 32);
+        auto insertion_start = high_resolution_clock::now();
+        for (int j = 0; j < sizes[i]; ++j) {
+            skiplist.set(j, j);
+        }
+        auto insertion_end = high_resolution_clock::now();
+        std::chrono::duration<double, milli> fp_ms_insertion = insertion_end - insertion_start;
+        times[i] = fp_ms_insertion.count();
+
+        cout << "Querying: " << endl;
+        auto query_start = high_resolution_clock::now();
+       
+        for (int j = 0; j < sizes[i] ; ++j) {
+            skiplist.get(j);
+        }
+        auto query_end = high_resolution_clock::now();
+        std::chrono::duration<double, milli> fp_ms_deletion = query_end - query_start;
+        times[i] = fp_ms_deletion.count();
+        cout << times[i] << endl;
     }
-    skiplist.remove(1);
-    cout << skiplist << endl;
-    skiplist.remove(3);
-    cout << skiplist << endl;
+
+    for (int i = 0 ;i < 5; ++i) {
+        cout << sizes[i] << " " << times[i] / 1000.0 << endl;
+    }
     return 0;
 }
