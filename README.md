@@ -4,7 +4,7 @@ Comparative Data Structures for Ordered Dictionary
 
 | Name | Data Structure |
 | -------- | -------- |
-| Mingyu Chen |B+Tree |
+| Mingyu Chen |Van emde boas tree|
 | Bolun Liu |BST  |
 | Haochuan Hu | AVL Tree  |
 | Mingji Han | Skip List |
