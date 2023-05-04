@@ -1,4 +1,4 @@
-## <u> AVL Tree Implementation 
+AVL Tree Implementation 
 
 
 - The ```insert``` method inserts a new key into the tree. 
