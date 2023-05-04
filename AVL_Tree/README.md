@@ -36,12 +36,13 @@ Args
 ```
 
 -------
-Install matplotlib
+To run on the SCC and plot the result, use those commands:
 ```python
---num 2000                  # size of the random array
---seed 42                   # seed for the random array
---sleepTime 0.001           # sleep time in the insert operation, to better fit the function
---plot 0                    # whether use matplotlib module to plot and save the result
+module load miniconda
+conda create --name avltree python=3.8
+conda activate avltree python=3.8
+pip install numpy matplotlib
+python run.py --num 1000 --seed 10 --sleepTime 0.001 --plot 0
 ```
 
 ------
