@@ -11,20 +11,18 @@ AVL Tree Implementation
 
 
 Folder Structure Conventions
-============================
+--------
 
-> Folder structure options and naming conventions for software projects
-
-### A typical top-level directory layout
+### Files
 
     .
     ├── AVLTree.py              # class defination of AVL tree
     ├── run.py                  # an example to build and insert array to an AVL tree
-    ├── run.py                  # An example plot showed in slides.
+    ├── plot.png                # if you set plot when running run.py, the plot whill be saved as this
     └── README.md
 
-
-
+-------
+command to run
 ```python
 python run.py --num 1000 --seed 10 --sleepTime 0.001 --plot 1
 ```
