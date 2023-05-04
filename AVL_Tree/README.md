@@ -23,20 +23,26 @@ Files
 -------
 To run the run.py, use this command
 ```python
-python run.py --num 1000 --seed 10 --sleepTime 0.001 --plot 1
+python run.py --num 1000 --seed 10 --sleepTime 0.001 --plot 0
 ```
 -------
 Args
 
 ```python
---num 1000                  # size of the random array
---seed 10                   # seed for the random array
+--num 2000                  # size of the random array
+--seed 42                   # seed for the random array
 --sleepTime 0.001           # sleep time in the insert operation, to better fit the function
---plot 1                    # whether use matplotlib module to plot and save the result
+--plot 0                    # whether use matplotlib module to plot and save the result
 ```
 
 -------
 Install matplotlib
+```python
+--num 2000                  # size of the random array
+--seed 42                   # seed for the random array
+--sleepTime 0.001           # sleep time in the insert operation, to better fit the function
+--plot 0                    # whether use matplotlib module to plot and save the result
+```
 
 ------
 Output example 
