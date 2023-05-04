@@ -8,8 +8,7 @@ AVL Tree Implementation
 
 - The ```delete``` method search and delete the key with given value.
 
-Files
--------
+
 
 -------
 
