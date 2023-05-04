@@ -16,23 +16,27 @@ Files
 
     .
     ├── AVLTree.py              # class defination of AVL tree
-    ├── run.py                  # an example to build and insert array to an AVL tree
+    ├── run.py                  # randomly generate an array and insert into an AVL tree, plot the time it takes
     ├── plot.png                # if you set plot when running run.py, the plot whill be saved as this
     └── README.md
 
 -------
-Command
+To run the run.py, use this command
 ```python
 python run.py --num 1000 --seed 10 --sleepTime 0.001 --plot 1
 ```
 -------
 Args
 
---num 1000 
---seed 10 
---sleepTime 0.001 
---plot 1
+```python
+--num 1000                  # size of the random array
+--seed 10                   # seed for the random array
+--sleepTime 0.001           # sleep time in the insert operation, to better fit the function
+--plot 1                    # whether use matplotlib module to plot and save the result
+```
 
+-------
+Install matplotlib
 
 ------
 Output example 
