@@ -8,15 +8,16 @@ AVL Tree Implementation
 
 - The ```delete``` method search and delete the key with given value.
 
+Files
+-------
 
 -------
-Files
+
     .
     ├── AVLTree.py              # class defination of AVL tree
     ├── run.py                  # an example to build and insert array to an AVL tree
     ├── plot.png                # if you set plot when running run.py, the plot whill be saved as this
     └── README.md
-
 
 -------
 Command
