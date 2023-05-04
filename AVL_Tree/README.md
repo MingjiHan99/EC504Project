@@ -10,7 +10,15 @@
 - The ```delete``` method search and delete the key with given value.
 
 
-
+  .
+    ├── build                   # Compiled files (alternatively `dist`)
+    ├── docs                    # Documentation files (alternatively `doc`)
+    ├── src                     # Source files (alternatively `lib` or `app`)
+    ├── test                    # Automated tests (alternatively `spec` or `tests`)
+    ├── tools                   # Tools and utilities
+    ├── LICENSE
+    └── README.md
+  
 Files:
   --AVLTree.py # class defination of AVL tree
   --run.py # 
