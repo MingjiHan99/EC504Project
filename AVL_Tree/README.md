@@ -22,7 +22,7 @@ Files
 
 -------
 To run the run.py, use this command
-```python
+```bash
 python run.py --num 1000 --seed 10 --sleepTime 0.001 --plot 0
 ```
 -------
@@ -37,7 +37,7 @@ Args
 
 -------
 To run on the SCC and plot the result, use those commands:
-```python
+```bash
 module load miniconda
 conda create --name avltree python=3.8
 conda activate avltree python=3.8
