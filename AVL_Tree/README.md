@@ -47,4 +47,5 @@ python run.py --num 1000 --seed 10 --sleepTime 0.001 --plot 0
 
 ------
 Output example 
+
 ![Figure_insertion](https://user-images.githubusercontent.com/92005749/236181132-9a768504-4fac-4a50-af31-b152370a501c.png)
