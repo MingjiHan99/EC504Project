@@ -10,8 +10,8 @@ AVL Tree Implementation
 - The ```delete``` method search and delete the key with given value.
 
 
-Folder Structure Conventions
---------
+Files
+-------
 
 ### Files
 
@@ -22,7 +22,7 @@ Folder Structure Conventions
     └── README.md
 
 -------
-command to run
+Command
 ```python
 python run.py --num 1000 --seed 10 --sleepTime 0.001 --plot 1
 ```
