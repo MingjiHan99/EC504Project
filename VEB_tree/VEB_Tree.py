@@ -1,11 +1,9 @@
- #!/usr/bin/env python3
 import math
 import time
 import random
 
 
 class VEB:
-
     # size n
     def __init__(self, n):
         self.round = 1
@@ -34,154 +32,145 @@ class VEB:
         return (x or 0) * ru + (y or 0)
 
 
-def VEB_min(helper):
-    if helper.min == -1:
+def VEB_min(veb):
+    if veb.min == -1:
         return -1
     else:
-        return helper.min
+        return veb.min
 
 
-def VEB_max(helper):
-    if helper.max == -1:
+def VEB_max(veb):
+    if veb.max == -1:
         return -1
     else:
-        return helper.max
+        return veb.max
 
 
-def insert(helper, key, value):
-    if helper.min == -1:
-        helper.min = key
-        helper.max = key
-        helper.minvalue = value
-        helper.maxvalue = value
+def insert(veb, key, value):
+    if veb.min == -1:
+        veb.min = key
+        veb.max = key
+        veb.minvalue = value
+        veb.maxvalue = value
     else:
-        if key < helper.min:
-            helper.min, key = key, helper.min
-            helper.minvalue, value = value, helper.minvalue
-        if helper.size > 2:
-            if VEB_min(helper.clusters[helper.high(key)]) == -1:
-                insert(helper.summary, helper.high(key), value)
-                helper.clusters[helper.high(key)].min = helper.low(key)
-                helper.clusters[helper.high(key)].max = helper.low(key)
-                helper.clusters[helper.high(key)].minvalue = value
-                helper.clusters[helper.high(key)].maxvalue = value
+        if key < veb.min:
+            veb.min, key = key, veb.min
+            veb.minvalue, value = value, veb.minvalue
+        if veb.size > 2:
+            if VEB_min(veb.clusters[veb.high(key)]) == -1:
+                insert(veb.summary, veb.high(key), value)
+                veb.clusters[veb.high(key)].min = veb.low(key)
+                veb.clusters[veb.high(key)].max = veb.low(key)
+                veb.clusters[veb.high(key)].minvalue = value
+                veb.clusters[veb.high(key)].maxvalue = value
             else:
-                insert(helper.clusters[helper.high(key)], helper.low(key), value)
-        if key > helper.max:
-            helper.max = key
-            helper.maxvalue = value
+                insert(veb.clusters[veb.high(key)], veb.low(key), value)
+        if key > veb.max:
+            veb.max = key
+            veb.maxvalue = value
 
 
-def isMember(helper, key):
-    if helper.size < key or helper.size == 2:
+def isMember(veb, key):
+    if veb.size < key or veb.size == 2:
         return False
-    if helper.min == key or helper.max == key:
+    if veb.min == key or veb.max == key:
         return True
-    return isMember(helper.clusters[helper.high(key)], helper.low(key))
+    return isMember(veb.clusters[veb.high(key)], veb.low(key))
 
 
-def lookup(helper, key):
-    if isMember(helper, key):
-        if helper.min == key:
-            return helper.minvalue
-        elif helper.max == key:
-            return helper.maxvalue
-        return lookup(helper.clusters[helper.high(key)], helper.low(key))
+def lookup(veb, key):
+    if isMember(veb, key):
+        if veb.min == key:
+            return veb.minvalue
+        elif veb.max == key:
+            return veb.maxvalue
+        return lookup(veb.clusters[veb.high(key)], veb.low(key))
 
 
-def VEB_successor(helper, x):
-    if helper.size == 2:
-        if x == 0 and helper.max == 1:
+def VEB_successor(veb, x):
+    if veb.size == 2:
+        if x == 0 and veb.max == 1:
             return 1
         else:
             return None
-    elif helper.min is not None and x < helper.min:
-        return helper.min
+    elif veb.min is not None and x < veb.min:
+        return veb.min
     else:
-        max_in_cluster = VEB_max(helper.clusters[helper.high(x)])
-        if max_in_cluster is not None and helper.low(x) < max_in_cluster:
-            offset = VEB_successor(helper.clusters[helper.high(x)], helper.low(x))
-            return helper.generate_index(helper.high(x), offset)
+        if VEB_max(veb.clusters[veb.high(x)]) is not None and veb.low(x) < VEB_max(veb.clusters[veb.high(x)]):
+            return veb.generate_index(veb.high(x), VEB_successor(veb.clusters[veb.high(x)], veb.low(x)))
         else:
-            succ_cluster = VEB_successor(helper.summary, helper.high(x))
-            if succ_cluster is None:
+            if VEB_successor(veb.summary, veb.high(x)) is None:
                 return None
             else:
-                offset = VEB_min(helper.clusters[succ_cluster])
-                return helper.generate_index(succ_cluster, offset)
+                cluster_next = VEB_successor(veb.summary, veb.high(x))
+                offset = VEB_min(veb.clusters[cluster_next])
+                return veb.generate_index(cluster_next, offset)
 
 
-# Function to find the predecessor of the given key
-def VEB_predecessor(helper, x):
-    if helper.size == 2:
-        if x == 1 and helper.min == 0:
-            return 0
-        else:
-            return None
-    elif helper.max is not None and x > helper.max:
-        return helper.max
-    else:
-        min_in_cluster = VEB_min(helper.clusters[helper.high(x)])
-        if min_in_cluster is not None and helper.low(x) > min_in_cluster:
-            offset = VEB_predecessor(helper.clusters[helper.high(x)], helper.low(x))
-            return helper.generate_index(helper.high(x), offset)
-        else:
-            pred_cluster = VEB_predecessor(helper.summary, helper.high(x))
-            if pred_cluster is None:
-                if helper.min is not None and x > helper.min:
-                    return helper.min
-                else:
-                    return None
-            else:
-                offset = VEB_max(helper.clusters[pred_cluster])
-                return helper.generate_index(pred_cluster, offset)
-
-
-def VEB_delete(helper, key):
-    if helper.max == helper.min:
-        helper.min = -1
-        helper.max = -1
-    elif helper.size == 2:
+def delete(veb, key):
+    # clear the saved value
+    insert(veb, key, -1)
+    if veb.max == veb.min:
+        veb.min = -1
+        veb.max = -1
+    elif veb.size == 2:
         if key == 0:
-            helper.min = 1
+            veb.min = 1
         else:
-            helper.min = 0
-        helper.max = helper.min
+            veb.min = 0
+        veb.max = veb.min
     else:
-        if key == helper.min:
-            first_cluster = VEB_min(helper.summary)
-            key = helper.generate_index(
-                first_cluster, VEB_min(helper.clusters[first_cluster]))
-            helper.min = key
-        VEB_delete(helper.clusters[helper.high(key)], helper.low(key))
-        if VEB_min(helper.clusters[helper.high(key)]) == -1:
-            VEB_delete(helper.summary, helper.high(key))
-            if key == helper.max:
-                max_insummary = VEB_max(helper.summary)
-                if max_insummary == -1:
-                    helper.max = helper.min
+        if key == veb.min:
+            key = veb.generate_index(VEB_min(veb.summary), VEB_min(veb.clusters[VEB_min(veb.summary)]))
+            veb.min = key
+        delete(veb.clusters[veb.high(key)], veb.low(key))
+        if VEB_min(veb.clusters[veb.high(key)]) == -1:
+            delete(veb.summary, veb.high(key))
+            if key == veb.max:
+                if VEB_max(veb.summary) == -1:
+                    veb.max = veb.min
                 else:
-                    helper.max = helper.generate_index(
-                        max_insummary, VEB_max(helper.clusters[max_insummary]))
-        elif key == helper.max:
-            helper.max = helper.generate_index(helper.high(
-                key), VEB_max(helper.clusters[helper.high(key)]))
+                    veb.max = veb.generate_index(VEB_max(veb.summary), VEB_max(veb.clusters[VEB_max(veb.summary)]))
+        elif key == veb.max:
+            veb.max = veb.generate_index(veb.high(key), VEB_max(veb.clusters[veb.high(key)]))
+
+#test basic functions
+veb = VEB(10)
+insert(veb, 1, "a")
+insert(veb, 8, "b")
+insert(veb, 2, "c")
+insert(veb, 6, "d")
 
 
-n=4
-while n<800001:
+print(isMember(veb, 6))
+print(lookup(veb, 6))
 
+delete(veb, 6)
+insert(veb, 6, "f")
+print(lookup(veb, 6))
+
+delete(veb, 2)
+print(isMember(veb, 2))
+print(VEB_successor(veb, 1))
+
+
+
+
+
+n = 4
+while n < 800001:
     veb = VEB(n)
-# Inserting keys
+    # Inserting keys
+
     for i in range(n):
         insert(veb, i, "12")
 
     start_time = time.time()
     for i in range(1000000):
-        lookup(veb, i%n)
+        lookup(veb, i % n)
     end_time = time.time()
-    print(math.log(n)," ",  end_time - start_time)
-    n = n*n
+    print(math.log(n), " ", end_time - start_time)
+    n = n * n
 # print(isMember(veb, 2))
 # print(VEB_predecessor(veb, 4), VEB_successor(veb, 1))
 # print(VEB_min(veb), VEB_max(veb))
@@ -192,7 +181,7 @@ while n<800001:
 # start = VEB_successor(veb, start)
 
 # if isMember(veb, 2):
-# VEB_delete(veb, 2)
+# delete(veb, 2)
 
 # print(isMember(veb, 2))
 # print(VEB_predecessor(veb, 4), VEB_successor(veb, 1))
