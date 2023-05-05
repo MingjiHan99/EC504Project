@@ -8,3 +8,12 @@ Comparative Data Structures for Ordered Dictionary
 | Bolun Liu |BST  |
 | Haochuan Hu | AVL Tree  |
 | Mingji Han | Skip List |
+
+
+### Run SkipList
+
+```
+cd skiplist
+make
+./skiplist
+```
