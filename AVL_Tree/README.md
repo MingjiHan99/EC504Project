@@ -40,9 +40,9 @@ To run on the SCC and plot the result, use those commands:
 ```bash
 module load miniconda
 conda create --name avltree python=3.8
-conda activate avltree python=3.8
+conda activate avltree
 pip install numpy matplotlib
-python run.py --num 1000 --seed 10 --sleepTime 0.001 --plot 0
+python run.py --num 5000 --seed 10 --sleepTime 0.001 --plot 1
 ```
 
 ------
